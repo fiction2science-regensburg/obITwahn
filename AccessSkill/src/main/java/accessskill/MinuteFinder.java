@@ -5,9 +5,9 @@ import java.util.Vector;
 
 public class MinuteFinder {
 	
-	public static int NOT_FOUND = -1;
-	public static int ONE_FOUND = 0;
-	public static int MULTIPLE_FOUND = 1;
+	public static final int NOT_FOUND = -1;
+	public static final int ONE_FOUND = 0;
+	public static final int MULTIPLE_FOUND = 1;
 
 	private int lastMinute = 1;
 	

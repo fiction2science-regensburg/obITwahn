@@ -4,7 +4,7 @@
   <groupId>dice</groupId>
   <packaging>jar</packaging>
   <version>1.0</version>
-  <name>Dice Alexa Example</name>
+  <name>Alexa Access Minute Skill</name>
   <url>http://developer.amazon.com/ask</url>
 
   <dependencies>

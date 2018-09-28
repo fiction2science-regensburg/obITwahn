@@ -26,7 +26,7 @@ public class AccessSpeechlet implements Speechlet {
 	private static final String SLOT_PARTI3 = "participant3";
 	private static final String SLOT_DATE = "date";
 	
-	private MinuteFinder myFinder;
+	private MinuteFinder myFinder = null;
 	
 	@Override
 	public void onSessionStarted(final SessionStartedRequest request, final Session session) throws SpeechletException {
@@ -84,8 +84,8 @@ public class AccessSpeechlet implements Speechlet {
 
 	private SpeechletResponse handleRequestMinute(Intent intent, Session session) {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-		Vector<String> participants = new List<String>();		
-		String date;
+		Vector<String> participants = new Vector<String>();		
+		String date = "";
 		
 		//get participants if any
 		if (intent.getSlot(SLOT_PARTI1).getValue() != null) {	
@@ -102,7 +102,10 @@ public class AccessSpeechlet implements Speechlet {
 			date = intent.getSlot(SLOT_DATE).getValue().toString();
 		}
 		
-		int findID = myFinder.findMinute(participants, date);
+		int findID = -9999;
+		if (myFinder != null){
+			findID = myFinder.findMinute(participants, date);	
+		}
 		
 		switch (findID) {
 		case MinuteFinder.NOT_FOUND:
