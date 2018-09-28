@@ -20,11 +20,13 @@ import com.amazon.speech.ui.Reprompt;
 
 public class AccessSpeechlet implements Speechlet {
 	private static final Logger log = LoggerFactory.getLogger(AccessSpeechlet.class);
+	private static final String INTENT_MINUTE_SUMMARY = "requestSummary";
 	private static final String INTENT_REQUEST_MINUTE = "requestMinute";
 	private static final String SLOT_PARTI1 = "participant_one";
 	private static final String SLOT_PARTI2 = "participant_two";
 	private static final String SLOT_PARTI3 = "participant_three";
 	private static final String SLOT_DATE = "date";
+	private static final String SLOT_MINUTE_ID = "minute_id";
 	
 	private MinuteFinder myFinder = null;
 	
@@ -55,6 +57,8 @@ public class AccessSpeechlet implements Speechlet {
 		String intentName = request.getIntent().getName();
 		if (INTENT_REQUEST_MINUTE.equals(intentName)) {
 			return handleRequestMinute(request.getIntent(), session);
+		} else if (INTENT_MINUTE_SUMMARY.equals(intentName)) {
+			return handleSummary(request.getIntent(), session);
 		} else if ("AMAZON.HelpIntent".equals(intentName)) {
 			return handleHelpIntent();
 		} else if ("AMAZON.StopIntent".equals(intentName)) {
@@ -80,6 +84,12 @@ public class AccessSpeechlet implements Speechlet {
 		speech.setText("I can give you information about a meeting by presenting you the minute"
 				+"you can specify the participants, the date and the topics");
 		return SpeechletResponse.newTellResponse(speech); 
+	}
+	
+	private SpeechletResponse handleSummary(Intent intent, Session session) {
+		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+		speech.setText(myFinder.getMinute());
+		return SpeechletResponse.newAskResponse(speech, createRepromptSpeech());
 	}
 
 	private SpeechletResponse handleRequestMinute(Intent intent, Session session) {
