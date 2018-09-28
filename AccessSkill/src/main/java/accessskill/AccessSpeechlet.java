@@ -22,11 +22,13 @@ public class AccessSpeechlet implements Speechlet {
 	private static final Logger log = LoggerFactory.getLogger(AccessSpeechlet.class);
 	private static final String INTENT_MINUTE_SUMMARY = "requestSummary";
 	private static final String INTENT_REQUEST_MINUTE = "requestMinute";
+	private static final String INTENT_REQUEST_EXPERT = "requestExpert";
 	private static final String SLOT_PARTI1 = "participant_one";
 	private static final String SLOT_PARTI2 = "participant_two";
 	private static final String SLOT_PARTI3 = "participant_three";
 	private static final String SLOT_DATE = "date";
 	private static final String SLOT_MINUTE_ID = "minute_id";
+	private static final String SLOT_TOPIC = "topic";
 	
 	private MinuteFinder myFinder = null;
 	
@@ -59,6 +61,8 @@ public class AccessSpeechlet implements Speechlet {
 			return handleRequestMinute(request.getIntent(), session);
 		} else if (INTENT_MINUTE_SUMMARY.equals(intentName)) {
 			return handleSummary(request.getIntent(), session);
+		} else if (INTENT_REQUEST_EXPERT.equals(intentName)) {
+			return handleExpert(request.getIntent(), session);
 		} else if ("AMAZON.HelpIntent".equals(intentName)) {
 			return handleHelpIntent();
 		} else if ("AMAZON.StopIntent".equals(intentName)) {
@@ -75,24 +79,35 @@ public class AccessSpeechlet implements Speechlet {
 
 	private SpeechletResponse handleStopIntent() {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-		speech.setText("Bye bye sweety.");
+		speech.setText("Bye bye.");
 		return SpeechletResponse.newTellResponse(speech);
 	}
 
 	private SpeechletResponse handleHelpIntent() {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-		speech.setText("I can give you information about a meeting by presenting you the minute"
+		speech.setText("I can give you information about a meeting by presenting you the minute, where"
 				+"you can specify the participants, the date and the topics");
 		return SpeechletResponse.newTellResponse(speech); 
 	}
 	
 	private SpeechletResponse handleSummary(Intent intent, Session session) {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-		if (myFinder != null){
-			speech.setText(myFinder.getMinute(1));
+		if ( (myFinder != null) && (intent.getSlot(SLOT_MINUTE_ID).getValue() != null) ){
+			speech.setText(myFinder.getMinute(Integer.parseInt(intent.getSlot(SLOT_MINUTE_ID).getValue())));
 		}
 		else{
 			speech.setText("Sorry not connected to database.");
+		}
+		return SpeechletResponse.newAskResponse(speech, createRepromptSpeech());
+	}
+	
+	private SpeechletResponse handleExpert(Intent intent, Session session) {
+		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+		if ( (myFinder != null) && (intent.getSlot(SLOT_TOPIC).getValue() != null) ){
+			speech.setText(myFinder.findExpert(String.valueOf(intent.getSlot(SLOT_TOPIC).getValue().toString())));
+		}
+		else {
+			speech.setText("Sorry either not connected to database or I couldn't recognize the topic.");
 		}
 		return SpeechletResponse.newAskResponse(speech, createRepromptSpeech());
 	}
@@ -128,14 +143,14 @@ public class AccessSpeechlet implements Speechlet {
 			speech.setText("Sorry I could not find a minute for this search request! Please try another request!");
 			break;
 		case MinuteFinder.ONE_FOUND:
-			speech.setText("I found one minute for this search requests, do you want to grasp its content?");
+			speech.setText("I found one minute for this search requests. " + myFinder.getMinute());
 			break;
 		case MinuteFinder.MULTIPLE_FOUND:
-			speech.setText("I found multiples minutes for this search requests,"
-					+" do you want to specify the search request or listen to any of them?");
+			speech.setText("I found multiples minutes for this search requests."
+					+"I recall the latest. " + myFinder.getMinute());
 			break;
 		default: 
-			speech.setText("Sorry something went wrong! Would you like to try again?");
+			speech.setText("Sorry something went wrong! Please try again.");
 			break;				
 		}
 		
