@@ -26,11 +26,18 @@ public class AccessSpeechlet implements Speechlet {
 	private static final String SLOT_PARTI3 = "participant3";
 	private static final String SLOT_DATE = "date";
 	
+	private MinuteFinder myFinder;
+	
 	@Override
 	public void onSessionStarted(final SessionStartedRequest request, final Session session) throws SpeechletException {
 		log.info("onSessionStarted requestId={}, sessionId={}", request.getRequestId(), session.getSessionId());
-		// Initial wird mit einem 6-seitigen Würfel gestartet
-		//session.setAttribute(SESSION_NUMBEROFSIDES, new Integer(6));
+		// we try to open a connection to our database and initialize the MinuteFinder
+		try{
+			myFinder = new MinuteFinder();
+		}
+		catch (Exception e) {
+			throw new SpeechletException("Could not connect to database!");
+		}
 	}
 
 	@Override
@@ -78,7 +85,9 @@ public class AccessSpeechlet implements Speechlet {
 	private SpeechletResponse handleRequestMinute(Intent intent, Session session) {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
 		Vector<String> participants = new List<String>();		
+		String date;
 		
+		//get participants if any
 		if (intent.getSlot(SLOT_PARTI1).getValue() != null) {	
 			participants.add(String.valueOf(intent.getSlot(SLOT_PARTI1).getValue().toString()));
 		} 			
@@ -88,13 +97,35 @@ public class AccessSpeechlet implements Speechlet {
 		if (intent.getSlot(SLOT_PARTI3).getValue() != null) {	
 			participants.add(String.valueOf(intent.getSlot(SLOT_PARTI3).getValue().toString()));
 		} 
+		//get date if any
+		if (intent.getSlot(SLOT_DATE).getValue() != null) {
+			date = intent.getSlot(SLOT_DATE).getValue().toString();
+		}
+		
+		int findID = myFinder.findMinute(participants, date);
+		
+		switch (findID) {
+		case MinuteFinder.NOT_FOUND:
+			speech.setText("Sorry I could not find a minute for this search request! Please try another request!");
+			break;
+		case MinuteFinder.ONE_FOUND:
+			speech.setText("I found one minute for this search requests, do you want to grasp its content?");
+			break;
+		case MinuteFinder.MULTIPLE_FOUND:
+			speech.setText("I found multiples minutes for this search requests,"
+					+" do you want to specify the search request or listen to any of them?");
+			break;
+		default: 
+			speech.setText("Sorry something went wrong! Would you like to try again?");
+			break;				
+		}
 		
 		return SpeechletResponse.newAskResponse(speech, createRepromptSpeech());
 	}
 
 	private Reprompt createRepromptSpeech() {
 		PlainTextOutputSpeech repromptSpeech = new PlainTextOutputSpeech();
-        repromptSpeech.setText("ich habe dich nicht verstanden");
+        repromptSpeech.setText("Sorry I was not able to listen to you. Please repeat yourself.");
         Reprompt reprompt = new Reprompt();
         reprompt.setOutputSpeech(repromptSpeech);
 		return reprompt;
