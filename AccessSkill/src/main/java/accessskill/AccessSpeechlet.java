@@ -93,7 +93,14 @@ public class AccessSpeechlet implements Speechlet {
 	private SpeechletResponse handleSummary(Intent intent, Session session) {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
 		if ( (myFinder != null) && (intent.getSlot(SLOT_MINUTE_ID).getValue() != null) ){
-			speech.setText(myFinder.getMinute(Integer.parseInt(intent.getSlot(SLOT_MINUTE_ID).getValue())));
+			int min_id = 0;
+			try {
+			min_id = Integer.parseInt(intent.getSlot(SLOT_MINUTE_ID).getValue());
+			}
+			catch (Exception e){
+				e.printStackTrace();
+			}
+			speech.setText(myFinder.getMinute(min_id));
 		}
 		else{
 			speech.setText("Sorry not connected to database.");

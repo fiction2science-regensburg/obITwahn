@@ -52,10 +52,10 @@ public class MinuteFinder {
 		JSONArray participants = null;
 		
 		try{
-		URL url = new URL(serverAddress);
-	    URLConnection request = url.openConnection();
-	    request.connect();
-	    JSONObject root = (JSONObject) parser.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
+			URL url = new URL(serverAddress);
+			URLConnection request = url.openConnection();
+			request.connect();
+			JSONObject root = (JSONObject) parser.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -110,6 +110,8 @@ public class MinuteFinder {
 		catch (IOException e) {
 			stringBuilder.append("Toll!");
 		} 
+		stringBuilder.append("The participants of the meeting were ");
+		stringBuilder.append("Ricardo, Richard and Maria.");
 		return stringBuilder.toString();
 	}
 	
