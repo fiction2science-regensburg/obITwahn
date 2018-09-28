@@ -75,12 +75,17 @@ public class MinuteFinder {
 					+"And there have always been Dwarves. And Dwarves are very neat to Donald Trump. Thus we need Dwarves.";
 			List<CardKeyword> keywordsList = KeywordsExtractor.getKeywordsList(text);
 			Iterator<CardKeyword> iterator = keywordsList.iterator();
-			while (iterator.hasNext()) {
+			int c = 0;
+			while (iterator.hasNext() && c < 3) {
 				stringBuilder.append(iterator.next().getStem());
+				if(c < 2){
+					stringBuilder.append(" and ");
+				}
+				c += 1;
 			}
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			stringBuilder.append("Toll!");
 		} 
 		return stringBuilder.toString();
 	}

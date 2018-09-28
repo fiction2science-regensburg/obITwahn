@@ -88,7 +88,12 @@ public class AccessSpeechlet implements Speechlet {
 	
 	private SpeechletResponse handleSummary(Intent intent, Session session) {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-		speech.setText(myFinder.getMinute());
+		if (myFinder != null){
+			speech.setText(myFinder.getMinute(1));
+		}
+		else{
+			speech.setText("Sorry not connected to database.");
+		}
 		return SpeechletResponse.newAskResponse(speech, createRepromptSpeech());
 	}
 
