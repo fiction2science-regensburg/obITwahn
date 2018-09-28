@@ -1,6 +1,7 @@
 package accessskill;
 
 import java.util.Random;
+import java.util.Vector;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,23 +20,24 @@ import com.amazon.speech.ui.Reprompt;
 
 public class AccessSpeechlet implements Speechlet {
 	private static final Logger log = LoggerFactory.getLogger(AccessSpeechlet.class);
-	private static final String SESSION_NUMBEROFSIDES = "diceNumberOfSides";
-	private static final String INTENT_CHOOSE = "chooseDice";
-	private static final String INTENT_ROLEDICE = "rollDice";
-	private static final String SLOT_NUMBEROFSIDES = "sides";
+	private static final String INTENT_REQUEST_MINUTE = "requestMinute";
+	private static final String SLOT_PARTI1 = "participant1";
+	private static final String SLOT_PARTI2 = "participant2";
+	private static final String SLOT_PARTI3 = "participant3";
+	private static final String SLOT_DATE = "date";
 	
 	@Override
 	public void onSessionStarted(final SessionStartedRequest request, final Session session) throws SpeechletException {
 		log.info("onSessionStarted requestId={}, sessionId={}", request.getRequestId(), session.getSessionId());
 		// Initial wird mit einem 6-seitigen Würfel gestartet
-		session.setAttribute(SESSION_NUMBEROFSIDES, new Integer(6));
+		//session.setAttribute(SESSION_NUMBEROFSIDES, new Integer(6));
 	}
 
 	@Override
 	public SpeechletResponse onLaunch(final LaunchRequest request, final Session session) throws SpeechletException {
 		log.info("onLaunch requestId={}, sessionId={}", request.getRequestId(), session.getSessionId());
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-		speech.setText("Willkommen bei Würfel.");
+		speech.setText("Welcome to your digitial assistant. How can I help you?");
 		return SpeechletResponse.newAskResponse(speech, createRepromptSpeech());
 	}
 
@@ -44,10 +46,8 @@ public class AccessSpeechlet implements Speechlet {
 		log.info("onIntent requestId={}, sessionId={}", request.getRequestId(), session.getSessionId());
 		System.out.println("Session:"+session+ " Intent:"+request.getIntent().getName());
 		String intentName = request.getIntent().getName();
-		if (INTENT_CHOOSE.equals(intentName)) {
-			return handleChooseDice(request.getIntent(), session);
-		} else if (INTENT_ROLEDICE.equals(intentName)) {
-			return handleRollDice(session);
+		if (INTENT_REQUEST_MINUTE.equals(intentName)) {
+			return handleRequestMinute(request.getIntent(), session);
 		} else if ("AMAZON.HelpIntent".equals(intentName)) {
 			return handleHelpIntent();
 		} else if ("AMAZON.StopIntent".equals(intentName)) {
@@ -62,35 +62,33 @@ public class AccessSpeechlet implements Speechlet {
 		log.info("onSessionEnded requestId={}, sessionId={}", request.getRequestId(), session.getSessionId());
 	}
 
-	private SpeechletResponse handleRollDice(Session session) {
-		int maxValue = (Integer) session.getAttribute(SESSION_NUMBEROFSIDES);
-		int randomValue = new Random().nextInt(maxValue) + 1;
-		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-		speech.setText("ich habe eine " + String.valueOf(randomValue) + " gewürfelt.");
-		return SpeechletResponse.newAskResponse(speech, createRepromptSpeech());
-	}
-	
 	private SpeechletResponse handleStopIntent() {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-		speech.setText("auf wiedersehen.");
+		speech.setText("Bye bye sweety.");
 		return SpeechletResponse.newTellResponse(speech);
 	}
 
 	private SpeechletResponse handleHelpIntent() {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-		speech.setText("bestimme wieviel seiten dein würfel hat oder würfle");
-		return SpeechletResponse.newTellResponse(speech);
+		speech.setText("I can give you information about a meeting by presenting you the minute"
+				+"you can specify the participants, the date and the topics");
+		return SpeechletResponse.newTellResponse(speech); 
 	}
 
-	private SpeechletResponse handleChooseDice(Intent intent, Session session) {
+	private SpeechletResponse handleRequestMinute(Intent intent, Session session) {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-		if (intent.getSlot(SLOT_NUMBEROFSIDES).getValue() == null) {
-			speech.setText("ich habe nicht verstanden wieviele seiten der würfel haben soll.");		
-		} else {
-			Integer numberOfSides = Integer.valueOf(intent.getSlot(SLOT_NUMBEROFSIDES).getValue().toString());
-			session.setAttribute(SESSION_NUMBEROFSIDES, numberOfSides);
-			speech.setText("ich benutze jetzt einen " + numberOfSides.toString() + " seitigen würfel");			
-		}
+		Vector<String> participants = new List<String>();		
+		
+		if (intent.getSlot(SLOT_PARTI1).getValue() != null) {	
+			participants.add(String.valueOf(intent.getSlot(SLOT_PARTI1).getValue().toString()));
+		} 			
+		if (intent.getSlot(SLOT_PARTI2).getValue() != null) {	
+			participants.add(String.valueOf(intent.getSlot(SLOT_PARTI2).getValue().toString()));
+		} 			
+		if (intent.getSlot(SLOT_PARTI3).getValue() != null) {	
+			participants.add(String.valueOf(intent.getSlot(SLOT_PARTI3).getValue().toString()));
+		} 
+		
 		return SpeechletResponse.newAskResponse(speech, createRepromptSpeech());
 	}
 
