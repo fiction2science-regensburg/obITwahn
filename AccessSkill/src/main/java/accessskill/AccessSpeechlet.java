@@ -27,7 +27,6 @@ public class AccessSpeechlet implements Speechlet {
 	private static final String SLOT_DATE = "date";
 	
 	private MinuteFinder myFinder;
-	private int lastMinute = 1;
 	
 	@Override
 	public void onSessionStarted(final SessionStartedRequest request, final Session session) throws SpeechletException {
@@ -39,7 +38,6 @@ public class AccessSpeechlet implements Speechlet {
 		catch (Exception e) {
 			throw new SpeechletException("Could not connect to database!");
 		}
-		//session.setAttribute(SESSION_NUMBEROFSIDES, new Integer(6));
 	}
 
 	@Override
@@ -109,7 +107,7 @@ public class AccessSpeechlet implements Speechlet {
 
 	private Reprompt createRepromptSpeech() {
 		PlainTextOutputSpeech repromptSpeech = new PlainTextOutputSpeech();
-        repromptSpeech.setText("ich habe dich nicht verstanden");
+        repromptSpeech.setText("Sorry I was not able to liste to you");
         Reprompt reprompt = new Reprompt();
         reprompt.setOutputSpeech(repromptSpeech);
 		return reprompt;
