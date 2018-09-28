@@ -15,7 +15,7 @@ import com.amazon.speech.Sdk;
 import com.amazon.speech.speechlet.Speechlet;
 import com.amazon.speech.speechlet.servlet.SpeechletServlet;
 
-import dice.DiceSpeechlet;
+import accessskill.AccessSpeechlet;
 
 /**
  * Shared launcher for executing all sample skills within a single servlet container.

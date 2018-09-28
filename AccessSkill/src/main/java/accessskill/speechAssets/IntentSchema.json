@@ -4,15 +4,15 @@
       "intent": "requestMinute",
       "slots": [
         {
-          "name": "participant1",
+          "name": "participant_one",
           "type": "AMAZON.SearchQuery"
         },
         {
-          "name": "participant2",
+          "name": "participant_two",
           "type": "AMAZON.SearchQuery"
         },
         {
-          "name": "participant3",
+          "name": "participant_three",
           "type": "AMAZON.SearchQuery"
         },
         {

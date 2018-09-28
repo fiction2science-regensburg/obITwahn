@@ -21,9 +21,9 @@ import com.amazon.speech.ui.Reprompt;
 public class AccessSpeechlet implements Speechlet {
 	private static final Logger log = LoggerFactory.getLogger(AccessSpeechlet.class);
 	private static final String INTENT_REQUEST_MINUTE = "requestMinute";
-	private static final String SLOT_PARTI1 = "participant1";
-	private static final String SLOT_PARTI2 = "participant2";
-	private static final String SLOT_PARTI3 = "participant3";
+	private static final String SLOT_PARTI1 = "participant_one";
+	private static final String SLOT_PARTI2 = "participant_two";
+	private static final String SLOT_PARTI3 = "participant_three";
 	private static final String SLOT_DATE = "date";
 	
 	private MinuteFinder myFinder = null;
@@ -84,10 +84,12 @@ public class AccessSpeechlet implements Speechlet {
 
 	private SpeechletResponse handleRequestMinute(Intent intent, Session session) {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+
 		Vector<String> participants = new Vector<String>();		
 		String date = "";
 		
 		//get participants if any
+		speech.setText("Hello hello");
 		if (intent.getSlot(SLOT_PARTI1).getValue() != null) {	
 			participants.add(String.valueOf(intent.getSlot(SLOT_PARTI1).getValue().toString()));
 		} 			
@@ -106,7 +108,6 @@ public class AccessSpeechlet implements Speechlet {
 		if (myFinder != null){
 			findID = myFinder.findMinute(participants, date);	
 		}
-		
 		switch (findID) {
 		case MinuteFinder.NOT_FOUND:
 			speech.setText("Sorry I could not find a minute for this search request! Please try another request!");
