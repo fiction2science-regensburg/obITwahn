@@ -33,7 +33,7 @@ public class AccessSpeechlet implements Speechlet {
 		log.info("onSessionStarted requestId={}, sessionId={}", request.getRequestId(), session.getSessionId());
 		// we try to open a connection to our database and initialize the MinuteFinder
 		try{
-		myFinder = new MinuteFinder();
+			myFinder = new MinuteFinder();
 		}
 		catch (Exception e) {
 			throw new SpeechletException("Could not connect to database!");
@@ -102,12 +102,30 @@ public class AccessSpeechlet implements Speechlet {
 			date = intent.getSlot(SLOT_DATE).getValue().toString();
 		}
 		
+		int findID = myFinder.findMinute(participants, date);
+		
+		switch (findID) {
+		case MinuteFinder.NOT_FOUND:
+			speech.setText("Sorry I could not find a minute for this search request! Please try another request!");
+			break;
+		case MinuteFinder.ONE_FOUND:
+			speech.setText("I found one minute for this search requests, do you want to grasp its content?");
+			break;
+		case MinuteFinder.MULTIPLE_FOUND:
+			speech.setText("I found multiples minutes for this search requests,"
+					+" do you want to specify the search request or listen to any of them?");
+			break;
+		default: 
+			speech.setText("Sorry something went wrong! Would you like to try again?");
+			break;				
+		}
+		
 		return SpeechletResponse.newAskResponse(speech, createRepromptSpeech());
 	}
 
 	private Reprompt createRepromptSpeech() {
 		PlainTextOutputSpeech repromptSpeech = new PlainTextOutputSpeech();
-        repromptSpeech.setText("Sorry I was not able to liste to you");
+        repromptSpeech.setText("Sorry I was not able to listen to you. Please repeat yourself.");
         Reprompt reprompt = new Reprompt();
         reprompt.setOutputSpeech(repromptSpeech);
 		return reprompt;
