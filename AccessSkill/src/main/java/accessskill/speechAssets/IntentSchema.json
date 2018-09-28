@@ -1,16 +1,26 @@
 {
   "intents": [
     {
-      "intent": "chooseDice",
+      "intent": "requestMinute",
       "slots": [
         {
-          "name": "sides",
-          "type": "AMAZON.NUMBER"
+          "name": "participant1",
+          "type": "AMAZON.SearchQuery"
+        },
+        {
+          "name": "participant2",
+          "type": "AMAZON.SearchQuery"
+        },
+        {
+          "name": "participant3",
+          "type": "AMAZON.SearchQuery"
+        },
+        {
+          "name": "date",
+          "type": "AMAZON.DATE"
         }
+        
       ]
-    },
-    {
-      "intent": "rollDice"
     },
     {
       "intent": "AMAZON.HelpIntent"
