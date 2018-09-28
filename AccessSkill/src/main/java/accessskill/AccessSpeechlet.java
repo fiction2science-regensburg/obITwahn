@@ -26,10 +26,19 @@ public class AccessSpeechlet implements Speechlet {
 	private static final String SLOT_PARTI3 = "participant3";
 	private static final String SLOT_DATE = "date";
 	
+	private MinuteFinder myFinder;
+	private int lastMinute = 1;
+	
 	@Override
 	public void onSessionStarted(final SessionStartedRequest request, final Session session) throws SpeechletException {
 		log.info("onSessionStarted requestId={}, sessionId={}", request.getRequestId(), session.getSessionId());
-		// Initial wird mit einem 6-seitigen Würfel gestartet
+		// we try to open a connection to our database and initialize the MinuteFinder
+		try{
+		myFinder = new MinuteFinder();
+		}
+		catch (Exception e) {
+			throw new SpeechletException("Could not connect to database!");
+		}
 		//session.setAttribute(SESSION_NUMBEROFSIDES, new Integer(6));
 	}
 
@@ -78,7 +87,9 @@ public class AccessSpeechlet implements Speechlet {
 	private SpeechletResponse handleRequestMinute(Intent intent, Session session) {
 		PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
 		Vector<String> participants = new List<String>();		
+		String date;
 		
+		//get participants if any
 		if (intent.getSlot(SLOT_PARTI1).getValue() != null) {	
 			participants.add(String.valueOf(intent.getSlot(SLOT_PARTI1).getValue().toString()));
 		} 			
@@ -88,6 +99,10 @@ public class AccessSpeechlet implements Speechlet {
 		if (intent.getSlot(SLOT_PARTI3).getValue() != null) {	
 			participants.add(String.valueOf(intent.getSlot(SLOT_PARTI3).getValue().toString()));
 		} 
+		//get date if any
+		if (intent.getSlot(SLOT_DATE).getValue() != null) {
+			date = intent.getSlot(SLOT_DATE).getValue().toString();
+		}
 		
 		return SpeechletResponse.newAskResponse(speech, createRepromptSpeech());
 	}
