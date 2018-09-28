@@ -1,3 +1,5 @@
 requestMinute show minutes of meeting with {participant1} on {date}.
 requestMinute show minutes of meeting with {participant1} {participant2} on {date}.
 requestMinute show minutes of meeting with {participant1} {participant2} {participant3} on {date}.
+
+selectIntent Show me minute {selection}.
