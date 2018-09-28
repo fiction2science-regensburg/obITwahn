@@ -1,4 +1,4 @@
-package dice;
+package accessskill;
 
 import java.util.Random;
 

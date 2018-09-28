@@ -1,4 +1,4 @@
-package dice;
+package accessskill;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +18,7 @@ public class AccessSpeechletRequestStreamHandler extends SpeechletRequestStreamH
     }
 
     public AccessSpeechletRequestStreamHandler() {
-        super(new DiceSpeechlet(), supportedApplicationIds);
+        super(new AccessSpeechlet(), supportedApplicationIds);
     }
 
     public AccessSpeechletRequestStreamHandler(Speechlet speechlet,
