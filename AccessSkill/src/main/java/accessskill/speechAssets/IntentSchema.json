@@ -23,6 +23,15 @@
       ]
     },
     {
+      "intent": "SelectIntent",
+      "slots": [
+        {
+          "name": "selection",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+    {
       "intent": "AMAZON.HelpIntent"
     },
     {
