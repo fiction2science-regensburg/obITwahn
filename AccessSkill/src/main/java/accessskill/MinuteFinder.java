@@ -12,12 +12,13 @@ public class MinuteFinder {
 		
 	}
 	
-	public String findMinute(Vector<String> participants, String date){
+	public int findMinute(Vector<String> participants, String date){
 		//implement search function
+		return -1;
 	}
 	
 	public String getMinute(int minuteID){
-		
+		return "";
 	}
 	
 	public String getMinute(){
