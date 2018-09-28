@@ -78,9 +78,9 @@ public final class Launcher {
         context.setContextPath("/");
         server.setHandler(context);
         
-       DiceSpeechlet kaufland = new DiceSpeechlet();
+        AccessSpeechlet accessMe = new AccessSpeechlet();
         
-        context.addServlet(new ServletHolder(createServlet(kaufland)), "/kaufland");
+        context.addServlet(new ServletHolder(createServlet(accessMe)), "/accessMe");
         
         server.start();
         server.join();
