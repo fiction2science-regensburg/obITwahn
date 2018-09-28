@@ -120,5 +120,5 @@
       </plugins>
     </pluginManagement>
   </build>
-  <artifactId>dice</artifactId>
+  <artifactId>accessskill</artifactId>
 </project>
