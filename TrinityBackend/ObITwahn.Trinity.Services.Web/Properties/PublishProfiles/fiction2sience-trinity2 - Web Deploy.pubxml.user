@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAMFb6M2mz4U23R7nH9OFdeQAAAAACAAAAAAAQZgAAAAEAACAAAABy20XSVkQg9bg2itWU5VlMMirNtFYZSr8O7swNNGtztAAAAAAOgAAAAAIAACAAAABIKGmCPEEITSnmtoHiU1uUzav3R7/QwLlM2Ynkk71GY4AAAACGdMPvKe1mBopWk0kUTBeQgErzHoAm4Rv2W8v7iwCOSLqW4/JO1xBrfOUxX3WYzzMGYw0bxuvsMpd9AL3sjtdZR76Uf8Gj4DFX6FoOOXCq4t3GhxtX8w8dfKszqLfZRHwjK8FEnHl0s2hPRnkgvdm/DMNLxN847nDdd1x03CiD6kAAAABxmy/625FSxinZYtiABTV0pk+w+VT/QIF+9YWgjQzIQfTvt5pKJZORX7e3Sd2/Vpi+YjoYtUt1ucvEBVJkMa7b</EncryptedPassword>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="TrinityContext">
+      <Value>Server=tcp:fiction2sience.database.windows.net,1433%3bInitial Catalog=trinity%3bPersist Security Info=False%3bUser ID=hweiss%3bPassword=B325mwSw145s2f#%3bMultipleActiveResultSets=False%3bEncrypt=True%3bTrustServerCertificate=False%3bConnection Timeout=30%3b</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="ObITwahn.Trinity.Services.Web.Data.TrinityContext">
+      <Value>Server=tcp:fiction2sience.database.windows.net,1433%3bInitial Catalog=trinity%3bPersist Security Info=False%3bUser ID=hweiss%3bPassword=B325mwSw145s2f#%3bMultipleActiveResultSets=False%3bEncrypt=True%3bTrustServerCertificate=False%3bConnection Timeout=30%3b</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

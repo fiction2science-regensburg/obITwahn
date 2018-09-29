@@ -6,10 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ObITwahn.Services.Meeting.Model;
+using ObITwahn.Trinity.Services.Web.Data;
 
 namespace ObITwahn.Trinity.Services.Web
 {
@@ -26,6 +30,12 @@ namespace ObITwahn.Trinity.Services.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddTransient<Repository<Meeting>>();
+            services.AddTransient<Repository<Employee>>();
+
+            services.AddDbContext<TrinityContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("TrinityContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
