@@ -30,7 +30,7 @@ public class MinuteFinder {
 	public static final int ONE_FOUND = 0;
 	public static final int MULTIPLE_FOUND = 1;
 	
-	public static final String serverAddress = "https://127.0.0.1";
+	public static final String serverAddress = "https://fiction2sience-trinity2.azurewebsites.net/api/meetings/";
 
 	private int lastMinute = 1;
 	
@@ -120,6 +120,22 @@ public class MinuteFinder {
 	}
 	
 	public String findExpert(String topic){
-		return "The expert about " + topic + " is Horst Seehofer. Do you want to call him?";
+		JSONParser parser = new JSONParser();
+		String expert = "";
+		
+		try{
+			URL url = new URL(serverAddress+"expert?topic="+topic);
+			URLConnection request = url.openConnection();
+			request.connect();
+			JSONObject root = (JSONObject) parser.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
+			expert = (String) root.get("date");
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		} 
+		catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return "The expert about " + topic + " is " + expert + ". Do you want to call him?";
 	}
 }
