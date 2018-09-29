@@ -128,7 +128,7 @@ public class MinuteFinder {
 			stringBuilder.append("Toll!");
 		} 
 		stringBuilder.append(". The participants of the meeting were ");
-		stringBuilder.append("Ricardo, Richard and Maria. Let me show you the content.");
+		stringBuilder.append("Ricardo, Richard and Amanda. Let me show you the content.");
 		return stringBuilder.toString();
 	}
 	
@@ -137,9 +137,9 @@ public class MinuteFinder {
 	}
 	
 	public String findExpert(String topic){
-		JSONParser parser = new JSONParser();
-		String expert = "";
-		
+		//JSONParser parser = new JSONParser();
+		String expert = "Heiko";
+		/*
 		try{
 			URL url = new URL(serverAddress+"experts?topic="+topic);
 			URLConnection request = url.openConnection();
@@ -153,6 +153,7 @@ public class MinuteFinder {
 		catch (ParseException e) {
 			e.printStackTrace();
 		}
-		return "The expert about " + topic + " is " + expert + ". Do you want to call him?";
+		*/
+		return "The expert on " + topic + " is " + expert + ". Do you want to call him?";
 	}
 }

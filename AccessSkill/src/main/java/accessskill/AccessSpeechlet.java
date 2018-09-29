@@ -154,7 +154,7 @@ public class AccessSpeechlet implements Speechlet {
 			break;
 		case MinuteFinder.MULTIPLE_FOUND:
 			speech.setText("I found multiples minutes for this search requests."
-					+"I recall the latest. " + myFinder.getMinute());
+					+" I recall the latest. " + myFinder.getMinute());
 			break;
 		default: 
 			speech.setText("Sorry something went wrong! Please try again.");
