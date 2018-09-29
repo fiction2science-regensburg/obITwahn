@@ -3,7 +3,7 @@ from spacy import displacy
 import time
 
 
-text1 = unicode("""We will sell 100 tons of steel for 200000 Dollar to Continental. They will in turn sell more cars to Donald Trump. Furthermore we will sell also 1000 tons of coal with a prize of 33333 Dollar to Tesla. Then there will be a great fight with Elon Musk.""")
+text1 = unicode("""In our meeting in Spartanburg we have agreed on setting the volume to 8,000 units with a total monetary volume of USD 14.2 million. Besides that we agreed on a potential upgrade to another 2,000 units for additional USD 4.1 million based on the overall demand in Spartanburg. Amanda Chalendar also offered to intensify collaboration between the Spartanburg plant and Regensburg in deploying innovative IoT solutions to improve supply chain efficiency. Furthermore, we will schedule a first ramp-up meeting on the 30th of September.""")
 
 nlp = spacy.load('en_core_web_sm')
 doc1 = nlp(text1)
